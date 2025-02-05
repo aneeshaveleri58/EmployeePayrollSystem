@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeePayrollSystem
 {
-    internal class Program
+    internal class PayrollSystem
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
