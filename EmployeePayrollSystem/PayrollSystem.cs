@@ -1,14 +1,28 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 public class PayrollSystem
 {
     private List<BaseEmployee> employees = new List<BaseEmployee>();
+    private const string FilePath = "employees.json"; // File to store data
+
+    public PayrollSystem()
+    {
+        LoadEmployeesFromFile(); // Load employees when the system starts
+    }
 
     public void AddEmployee()
     {
         Console.Write("Enter employee ID: ");
         int id = int.Parse(Console.ReadLine());
+
+        if (employees.Exists(e => e.ID == id))
+        {
+            Console.WriteLine("Employee ID already exists. Try a different ID.");
+            return;
+        }
 
         Console.Write("Enter employee name: ");
         string name = Console.ReadLine();
@@ -42,6 +56,7 @@ public class PayrollSystem
         }
 
         employees.Add(employee);
+        SaveEmployeesToFile(); // Save after adding new employee
         Console.WriteLine("Employee added successfully.");
     }
 
@@ -80,5 +95,22 @@ public class PayrollSystem
             totalPayroll += employee.CalculateSalary();
         }
         Console.WriteLine($"Total Payroll: {totalPayroll:C}");
+    }
+
+    // Save employee data to a file (employees.json)
+    private void SaveEmployeesToFile()
+    {
+        var json = JsonConvert.SerializeObject(employees);
+        File.WriteAllText(FilePath, json);
+    }
+
+    // Load employee data from a file (employees.json)
+    private void LoadEmployeesFromFile()
+    {
+        if (File.Exists(FilePath))
+        {
+            var json = File.ReadAllText(FilePath);
+            employees = JsonConvert.DeserializeObject<List<BaseEmployee>>(json);
+        }
     }
 }

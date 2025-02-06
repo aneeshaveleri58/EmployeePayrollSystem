@@ -17,7 +17,15 @@ class Program
             Console.WriteLine("4. Display Total Payroll");
             Console.WriteLine("5. Exit");
             Console.Write("Enter your choice: ");
-            int choice = int.Parse(Console.ReadLine());
+
+            int choice;
+            if (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number.");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+                continue; // Skip the rest of the loop and ask for input again
+            }
 
             switch (choice)
             {
